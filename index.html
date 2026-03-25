@@ -2,39 +2,44 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calcolatore Orario di Uscita</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Orario uscita Flavietta</title>
   <style>
     :root {
       --bg1: #ffe4ec;
       --bg2: #fff7fb;
-      --card: rgba(255, 255, 255, 0.78);
+      --card: rgba(255, 255, 255, 0.88);
       --text: #5a2a3a;
       --accent: #ff6fa1;
       --accent-dark: #e84d87;
-      --shadow: 0 20px 45px rgba(232, 77, 135, 0.18);
-      --border: rgba(255, 111, 161, 0.22);
+      --shadow: 0 18px 40px rgba(232, 77, 135, 0.16);
+      --border: rgba(255, 111, 161, 0.2);
+      --muted: #8a6270;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      height: 100%;
     }
 
     body {
-      min-height: 100vh;
+      min-height: 100%;
+      margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: max(18px, env(safe-area-inset-top)) 16px max(18px, env(safe-area-inset-bottom)) 16px;
       background:
-        radial-gradient(circle at top left, #ffd1e0 0%, transparent 30%),
-        radial-gradient(circle at bottom right, #ffd9eb 0%, transparent 25%),
+        radial-gradient(circle at top left, #ffd1e0 0%, transparent 32%),
+        radial-gradient(circle at bottom right, #ffd9eb 0%, transparent 26%),
         linear-gradient(135deg, var(--bg1), var(--bg2));
       color: var(--text);
-      padding: 24px;
-      overflow: hidden;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
     }
 
     .floating-hearts {
@@ -42,21 +47,23 @@
       inset: 0;
       pointer-events: none;
       overflow: hidden;
+      z-index: 0;
     }
 
     .heart {
       position: absolute;
-      font-size: 20px;
-      opacity: 0.22;
+      font-size: clamp(14px, 3vw, 20px);
+      opacity: 0.18;
       animation: floatUp linear infinite;
+      will-change: transform, opacity;
     }
 
-    .heart:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; }
+    .heart:nth-child(1) { left: 8%; animation-duration: 12s; animation-delay: 0s; }
     .heart:nth-child(2) { left: 22%; animation-duration: 15s; animation-delay: 2s; }
     .heart:nth-child(3) { left: 38%; animation-duration: 13s; animation-delay: 1s; }
-    .heart:nth-child(4) { left: 55%; animation-duration: 16s; animation-delay: 4s; }
-    .heart:nth-child(5) { left: 70%; animation-duration: 14s; animation-delay: 3s; }
-    .heart:nth-child(6) { left: 85%; animation-duration: 17s; animation-delay: 5s; }
+    .heart:nth-child(4) { left: 56%; animation-duration: 16s; animation-delay: 4s; }
+    .heart:nth-child(5) { left: 73%; animation-duration: 14s; animation-delay: 3s; }
+    .heart:nth-child(6) { left: 88%; animation-duration: 17s; animation-delay: 5s; }
 
     @keyframes floatUp {
       from {
@@ -64,26 +71,26 @@
         opacity: 0;
       }
       20% {
-        opacity: 0.25;
+        opacity: 0.2;
       }
       to {
-        transform: translateY(-15vh) scale(1.2);
+        transform: translateY(-15vh) scale(1.15);
         opacity: 0;
       }
     }
 
     .card {
       position: relative;
-      width: 100%;
-      max-width: 460px;
+      z-index: 1;
+      width: min(100%, 440px);
       background: var(--card);
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border);
-      border-radius: 28px;
-      padding: 32px 26px;
+      border-radius: 26px;
+      padding: 24px 18px 20px;
       box-shadow: var(--shadow);
       text-align: center;
-      z-index: 1;
     }
 
     .badge {
@@ -92,55 +99,61 @@
       border-radius: 999px;
       background: rgba(255, 111, 161, 0.14);
       color: var(--accent-dark);
-      font-size: 0.9rem;
-      font-weight: 700;
-      margin-bottom: 16px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-bottom: 14px;
     }
 
     h1 {
-      font-size: clamp(1.8rem, 3vw, 2.4rem);
-      line-height: 1.1;
-      margin-bottom: 10px;
+      margin: 0 0 8px;
+      font-size: clamp(1.75rem, 6vw, 2.35rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
     }
 
     .subtitle {
-      font-size: 1rem;
+      margin: 0 0 22px;
+      font-size: clamp(0.96rem, 3.5vw, 1rem);
       color: #7a4a5b;
-      margin-bottom: 28px;
+      line-height: 1.45;
     }
 
     .input-group {
       text-align: left;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     label {
       display: block;
       font-size: 0.95rem;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 8px;
     }
 
     input[type="time"] {
       width: 100%;
-      padding: 16px 18px;
+      min-height: 54px;
+      padding: 14px 16px;
       border: 1.5px solid #f5b8cf;
       border-radius: 16px;
-      font-size: 1.1rem;
-      background: rgba(255,255,255,0.95);
+      font-size: 1.05rem;
+      background: rgba(255,255,255,0.97);
       color: var(--text);
       outline: none;
-      transition: 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      appearance: none;
+      -webkit-appearance: none;
     }
 
     input[type="time"]:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 5px rgba(255, 111, 161, 0.14);
+      box-shadow: 0 0 0 4px rgba(255, 111, 161, 0.12);
     }
 
     button {
       width: 100%;
-      padding: 16px;
+      min-height: 56px;
+      padding: 15px 16px;
       border: none;
       border-radius: 16px;
       background: linear-gradient(135deg, var(--accent), var(--accent-dark));
@@ -148,22 +161,25 @@
       font-size: 1rem;
       font-weight: 800;
       cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      box-shadow: 0 12px 24px rgba(232, 77, 135, 0.28);
-      margin-bottom: 18px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+      box-shadow: 0 12px 24px rgba(232, 77, 135, 0.25);
+      margin-bottom: 14px;
     }
 
-    button:hover {
-      transform: translateY(-2px);
+    button:active {
+      transform: scale(0.985);
+    }
+
+    .panel {
+      padding: 16px 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 111, 161, 0.14);
     }
 
     .result {
-      margin-top: 4px;
-      padding: 20px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.78);
-      border: 1px solid rgba(255, 111, 161, 0.16);
-      min-height: 92px;
+      margin-top: 2px;
+      min-height: 88px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -173,53 +189,70 @@
 
     .result small,
     .countdown small {
-      color: #8a6270;
-      font-weight: 600;
-      letter-spacing: 0.02em;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.35;
     }
 
     .result strong {
-      font-size: 2rem;
+      font-size: clamp(1.8rem, 8vw, 2.2rem);
       color: var(--accent-dark);
+      line-height: 1;
+      word-break: break-word;
     }
 
     .countdown {
-      margin-top: 16px;
-      padding: 18px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.72);
-      border: 1px solid rgba(255, 111, 161, 0.16);
+      margin-top: 12px;
     }
 
     .countdown-time {
-      font-size: 1.55rem;
-      font-weight: 800;
+      font-size: clamp(1.2rem, 6vw, 1.65rem);
+      font-weight: 900;
       color: var(--accent-dark);
-      margin-top: 6px;
+      margin-top: 8px;
+      line-height: 1.15;
     }
 
     .footer {
-      margin-top: 20px;
-      font-size: 0.9rem;
+      margin-top: 16px;
+      font-size: 0.88rem;
       color: #8d6170;
+      line-height: 1.4;
     }
 
     .sparkle {
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 380px) {
       .card {
-        padding: 26px 18px;
-        border-radius: 24px;
+        padding: 20px 14px 18px;
+        border-radius: 22px;
       }
 
-      .result strong {
-        font-size: 1.7rem;
+      .panel {
+        padding: 14px 12px;
       }
 
-      .countdown-time {
-        font-size: 1.35rem;
+      button,
+      input[type="time"] {
+        border-radius: 14px;
+      }
+    }
+
+    @media (min-width: 700px) {
+      .card {
+        padding: 30px 24px 22px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .heart,
+      button,
+      input[type="time"] {
+        animation: none !important;
+        transition: none !important;
       }
     }
   </style>
@@ -234,81 +267,82 @@
     <div class="heart">💕</div>
   </div>
 
-  <div class="card">
+  <main class="card">
     <div class="badge">Per Flavietta 💕</div>
-    <h1>Calcolatore orario di uscita</h1>
-    <p class="subtitle">Inserisci l'orario di ingresso e scopri subito a che ora puoi uscire dal lavoro.</p>
+    <h1>Orario di uscita</h1>
+    <p class="subtitle">Inserisci il timbro d'ingresso e scopri subito quando Flavietta può finalmente uscire dal lavoro.</p>
 
     <div class="input-group">
       <label for="ingresso">Orario di ingresso</label>
       <input type="time" id="ingresso" required />
     </div>
 
-    <button onclick="calcolaUscita()">Calcola l'orario di uscita ✨</button>
+    <button id="calcolaBtn" type="button">Calcola l'orario di uscita ✨</button>
 
-    <div class="result" id="risultato">
+    <section class="panel result" id="risultato">
       <small>Il tuo orario comparirà qui</small>
       <strong>--:--</strong>
-    </div>
+    </section>
 
-    <div class="countdown" id="countdownBox">
+    <section class="panel countdown" id="countdownBox">
       <small>Tempo rimanente all'uscita</small>
       <div class="countdown-time" id="countdown">--h --m --s</div>
-    </div>
+    </section>
 
     <div class="footer">
       Calcolo basato su <strong>8 ore e 25 minuti</strong> di lavoro <span class="sparkle">🌷</span>
     </div>
-  </div>
+  </main>
 
   <script>
     let countdownInterval = null;
+    const ingressoInput = document.getElementById('ingresso');
+    const risultatoBox = document.getElementById('risultato');
+    const countdownEl = document.getElementById('countdown');
+    const calcolaBtn = document.getElementById('calcolaBtn');
+    const MINUTI_DA_AGGIUNGERE = 8 * 60 + 25;
+
+    function formattaOrario(data) {
+      const ore = String(data.getHours()).padStart(2, '0');
+      const minuti = String(data.getMinutes()).padStart(2, '0');
+      return `${ore}:${minuti}`;
+    }
 
     function calcolaUscita() {
-      const input = document.getElementById('ingresso').value;
-      const box = document.getElementById('risultato');
-      const countdownEl = document.getElementById('countdown');
+      const input = ingressoInput.value;
 
       if (!input) {
-        box.innerHTML = '<small>Attenzione</small><strong style="font-size:1.2rem;">Inserisci un orario valido</strong>';
+        risultatoBox.innerHTML = '<small>Attenzione</small><strong style="font-size:1.1rem;">Inserisci un orario valido</strong>';
         countdownEl.textContent = '--h --m --s';
         if (countdownInterval) clearInterval(countdownInterval);
         return;
       }
 
       const [ore, minuti] = input.split(':').map(Number);
-      const totaleMinutiIngresso = ore * 60 + minuti;
-      const minutiDaAggiungere = 8 * 60 + 25;
-      const totale = totaleMinutiIngresso + minutiDaAggiungere;
+      const adesso = new Date();
+      const ingresso = new Date();
+      ingresso.setHours(ore, minuti, 0, 0);
 
-      const oreUscita = Math.floor((totale % (24 * 60)) / 60)
-        .toString()
-        .padStart(2, '0');
-      const minutiUscita = (totale % 60)
-        .toString()
-        .padStart(2, '0');
+      const uscita = new Date(ingresso.getTime() + MINUTI_DA_AGGIUNGERE * 60000);
 
-      box.innerHTML = `
+      risultatoBox.innerHTML = `
         <small>Flavietta può uscire alle</small>
-        <strong>${oreUscita}:${minutiUscita}</strong>
+        <strong>${formattaOrario(uscita)}</strong>
       `;
 
-      avviaCountdown(ore, minuti, minutiDaAggiungere);
+      avviaCountdown(uscita, adesso, ingresso);
     }
 
-    function avviaCountdown(oreIngresso, minutiIngresso, minutiDaAggiungere) {
-      const countdownEl = document.getElementById('countdown');
-      const now = new Date();
-      const uscita = new Date();
-
-      uscita.setHours(oreIngresso, minutiIngresso, 0, 0);
-      uscita.setMinutes(uscita.getMinutes() + minutiDaAggiungere);
-
+    function avviaCountdown(uscita, adesso, ingresso) {
       if (countdownInterval) clearInterval(countdownInterval);
 
+      if (uscita.getTime() < adesso.getTime() && ingresso.getTime() < adesso.getTime()) {
+        uscita.setDate(uscita.getDate() + 1);
+      }
+
       function aggiornaCountdown() {
-        const adesso = new Date();
-        let diff = uscita - adesso;
+        const oraAttuale = new Date();
+        let diff = uscita.getTime() - oraAttuale.getTime();
 
         if (diff <= 0) {
           countdownEl.textContent = 'Puoi uscireee 💖';
@@ -316,9 +350,9 @@
           return;
         }
 
-        const ore = Math.floor(diff / (1000 * 60 * 60));
-        const minuti = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const secondi = Math.floor((diff % (1000 * 60)) / 1000);
+        const ore = Math.floor(diff / 3600000);
+        const minuti = Math.floor((diff % 3600000) / 60000);
+        const secondi = Math.floor((diff % 60000) / 1000);
 
         countdownEl.textContent = `${String(ore).padStart(2, '0')}h ${String(minuti).padStart(2, '0')}m ${String(secondi).padStart(2, '0')}s`;
       }
@@ -327,7 +361,9 @@
       countdownInterval = setInterval(aggiornaCountdown, 1000);
     }
 
-    document.getElementById('ingresso').addEventListener('keydown', function (e) {
+    calcolaBtn.addEventListener('click', calcolaUscita);
+    ingressoInput.addEventListener('change', calcolaUscita);
+    ingressoInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') calcolaUscita();
     });
   </script>
